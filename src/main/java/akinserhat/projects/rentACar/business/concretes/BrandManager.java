@@ -9,6 +9,7 @@ import akinserhat.projects.rentACar.business.requests.CreateBrandRequest;
 import akinserhat.projects.rentACar.business.requests.UpdateBrandRequest;
 import akinserhat.projects.rentACar.business.responses.GetAllBrandsResponse;
 import akinserhat.projects.rentACar.business.responses.GetByIdBrandResponse;
+import akinserhat.projects.rentACar.business.rules.BrandBusinessRules;
 import akinserhat.projects.rentACar.core.utilities.mappers.ModelMapperService;
 import akinserhat.projects.rentACar.dataAccess.abstracts.BrandRepository;
 import akinserhat.projects.rentACar.entities.concretes.Brand;
@@ -20,18 +21,10 @@ public class BrandManager implements BrandService {
 
 	private BrandRepository brandRepository;
 	private ModelMapperService modelMapperService;
+	private BrandBusinessRules brandBusinessRules;
 
 	@Override
 	public List<GetAllBrandsResponse> getAll() {
-
-//		List<Brand> brands = brandRepository.findAll();
-//		List<GetAllBrandsResponse> brandsResponse = new ArrayList<GetAllBrandsResponse>();
-//		
-//		for (Brand brand : brands) {
-//			GetAllBrandsResponse responseItem = new GetAllBrandsResponse();
-//			responseItem.setId(brand.getId());
-//			responseItem.setName(brand.getName());
-//			brandsResponse.add(responseItem); }
 
 		List<Brand> brands = brandRepository.findAll();
 		List<GetAllBrandsResponse> brandsResponse = brands.stream()
@@ -51,9 +44,9 @@ public class BrandManager implements BrandService {
 
 	@Override
 	public void add(CreateBrandRequest createBrandRequest) {
-		// Brand brand = new Brand();
-		// brand.setName(createBrandRequest.getName());
-
+		
+		this.brandBusinessRules.checkIfBrandNameExists(createBrandRequest.getName());
+		
 		Brand brand = this.modelMapperService.forRequest()
 				.map(createBrandRequest, Brand.class);
 

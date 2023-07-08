@@ -18,6 +18,7 @@ import akinserhat.projects.rentACar.business.requests.CreateBrandRequest;
 import akinserhat.projects.rentACar.business.requests.UpdateBrandRequest;
 import akinserhat.projects.rentACar.business.responses.GetAllBrandsResponse;
 import akinserhat.projects.rentACar.business.responses.GetByIdBrandResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -38,7 +39,7 @@ public class BrandsController {
 
 	@PostMapping()
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public void add(@RequestBody CreateBrandRequest createBrandRequest) {
+	public void add(@RequestBody @Valid CreateBrandRequest createBrandRequest) {
 		this.brandService.add(createBrandRequest);
 	}
 	
